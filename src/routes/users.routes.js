@@ -1,12 +1,16 @@
 const { Router } = require ("express");
 
+const UsersController = require("../controllers/UsersController");
+
 //UserController
 
 const usersRoutes = Router();
 
 //Middleware
 
-//userRoutes.post("/",) 
+usersController = new UsersController;
+
+usersRoutes.post("/", usersController.create);
 
 
 module.exports = usersRoutes;
