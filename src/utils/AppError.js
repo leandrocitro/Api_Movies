@@ -2,7 +2,7 @@ class AppError {
     message;
     statuscode;
 
-    constructor(message, statuscode = 400) {
+    constructor(message, statusCode = 400) {
         this.message = message;
         this.statusCode = statusCode;
     }
