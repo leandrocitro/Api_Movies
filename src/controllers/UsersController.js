@@ -5,7 +5,7 @@ const AppError = require("../utils/AppError");
 const express = require("express");
 
 const knex = require("../database/knex");
-const { EMPTY } = require("sqlite3");
+
 
 
 class UsersController {
@@ -20,7 +20,7 @@ class UsersController {
 
         //console.log(checkUsersExists.length);
 
-       if (checkUsersExists.length > 0) {
+        if (checkUsersExists.length > 0) {
             throw new AppError("Este e-mail já está cadastrado.");
 
         }
@@ -32,12 +32,35 @@ class UsersController {
             email,
             password: hashedPassord,
             isAdmin
-        }) 
+        })
 
 
         return response.status(201).json(`User created sucessfully!`);
 
 
+
+    }
+
+    async showUsers(request, response) {
+        const Allusers = await knex("users");
+
+        //console.log(Allusers);
+        return response.json(Allusers)
+    }
+
+    async deleteUser(request, response) {
+        const { id } = request.params;
+
+
+        const [user] = await knex("users").where({ id });
+
+
+        if (user.length === 0) {
+            throw new AppError("Este usuário não existe");
+        }
+
+        await knex("users").where({ id }).delete();
+        return response.json(`User ${user.name} deleted with sucessfully`);
 
     }
 
