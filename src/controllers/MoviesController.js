@@ -25,6 +25,18 @@ class MoviesController {
         response.json("Movie created with sucess");
     }
 
+    async show(request, response){
+        const { id } = request.params;
+
+        const [movie] = await knex("movie_notes").where({ id });
+
+        if(!movie){
+            throw new AppError("The movie not found");
+        }
+
+        return response.json(movie);
+    }
+
     async showMovies(request, response) {
         const movies = await knex("movie_notes");
         return response.json(movies);
