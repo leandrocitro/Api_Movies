@@ -1,4 +1,6 @@
-//const AppError = require("../utils/AppError");
+const AppError = require("../utils/AppError");
+
+const express = require("express");
 
 const knex = require("../database/knex");
 
@@ -29,8 +31,19 @@ class MoviesController {
     }
 
     async delete(request, response) {
-        const {movie_id} = request.params;
+        const { movie_id } = request.params;
 
+        const [movie] = await knex("movie_notes").where( { id: movie_id });
+
+        //return response.json( movie.title );
+
+        if(!movie){
+           throw new AppError("This film not exists");
+        }
+        
+        await knex("movie_notes").where({id:movie_id}).delete();
+        return response.json(`Movie deleted with sucess`);
+        
         
     }
 
